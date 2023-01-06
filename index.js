@@ -45,6 +45,17 @@ import updateWorkToCompleted from './functions/works/updateWorkToCompleted.js'
 import addUser from './functions/register/addUser.js'
 import loginUser from './functions/register/loginUser.js'
 
+// inventory functions
+import addinventory from './functions/Inventory/updateInventory.js'
+import getAllinventory from './functions/Inventory/getAllInventory.js'
+import getInventoryForDep from './functions/Inventory/getInventoryForDepartment.js'
+import reqInventory from './functions/Inventory/requestInventory.js'
+import getReqInventory from './functions/Inventory/getAllRequests.js'
+
+// income functions
+import updateSales from './functions/income/updateIncome.js'
+import getSales from './functions/income/getIncome.js'
+
 
 app.use(bodyParser.json())
 
@@ -66,6 +77,26 @@ app.use('/work',updateWorkToCompleted)
 app.use('/user',addUser)
 
 app.use('/user',loginUser)
+
+//////////////////////////////////////////////////////////////
+
+app.use('/inventory',addinventory)
+
+app.use('/inventory',getAllinventory)
+
+app.use('/inventory',getInventoryForDep)
+
+app.use('/inventory',reqInventory)
+
+app.use('/inventory',getReqInventory)
+
+///////////////////////////////////////////////////////////////
+
+app.use('/income',updateSales)
+
+app.use('/income',getSales)
+
+
 
 
 
