@@ -3,8 +3,8 @@ import date from "date-and-time";
 import "dotenv/config";
 import express from "express";
 import addUserModel from "../../models/addUsersModel.js";
-import Cryptr from 'cryptr'
-const cryptr = new Cryptr('myTotallySecretKey');
+import Cryptr from "cryptr";
+const cryptr = new Cryptr("myTotallySecretKey");
 
 const router = express.Router();
 
@@ -15,25 +15,26 @@ router.post("/loginUser", async (req, res) => {
   try {
     const { userName, password } = req.body;
     const userId = req.query.userId;
-    if (!userName || !password || !userId) {
+    if (!userName || !password) {
       return res.status(422).json({
-        userId: "userId is required",
         userName: "userName is required",
         password: "password required",
       });
     }
 
-    const getUser = await addUserModel.findById(userId);
+    const getUser = await addUserModel.findOne({ userName });
+
+    if (!getUser) {
+      return res.status(404).json("Invalid users details");
+    }
 
     const decryptedPassword = cryptr.decrypt(getUser.password);
 
-    if(getUser.userName == userName && decryptedPassword == password){
-      res.send(true);
+    if (getUser.userName == userName && decryptedPassword == password) {
+      res.status(200).send(getUser);
+    } else {
+      return res.status(404).json("Invalid user details");
     }
-    else{
-      res.send(false);
-    }
-
   } catch (err) {
     res.send(err);
   }
