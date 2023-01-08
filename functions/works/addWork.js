@@ -13,10 +13,10 @@ const dateTime = date.format(now, "ddd, MMM DD YYYY");
 
 router.post("/addWork", async (req, res) => {
   try {
-    const userRole = req.headers.role
-    if (userRole != "supervisor" ){
-      return res.send ("user not authorized to perform this task")
-    }
+    const userRole = req.headers.role;
+    // if (userRole != "supervisor" ){
+    //   return res.send ("user not authorized to perform this task")
+    // }
 
     const { taskName, description, department, materials, assignedTo } = req.body;
     if (!taskName || !description || !department || !materials || !assignedTo) {
@@ -25,25 +25,28 @@ router.post("/addWork", async (req, res) => {
         description: "description required",
         department: "department required",
         materials: "materials required",
-        assignedTo: "assignedTo required"
+        assignedTo: "assignedTo required",
       });
     }
 
-    const checkAlreadyUsed = await addTodoModel.find({ taskName: taskName, department: department });
+    const checkAlreadyUsed = await addTodoModel.find({
+      taskName: taskName,
+      department: department,
+    });
     if (checkAlreadyUsed.length != 0) {
-      return res.send ("task name already used")
+      return res.send("task name already used");
     }
 
     const getDepartment = await addDepartmentModel.findById(department);
 
-    if (getDepartment == null){
-      return res.send("Department not found for given Id")
+    if (getDepartment == null) {
+      return res.send("Department not found for given Id");
     }
 
     const getAssignedUser = await addUserModel.findById(assignedTo);
 
-    if (getAssignedUser == null){
-      return res.send("User not found for given Id")
+    if (getAssignedUser == null) {
+      return res.send("User not found for given Id");
     }
 
     const workData = new addTodoModel({
@@ -61,7 +64,6 @@ router.post("/addWork", async (req, res) => {
 
     await workData.save();
     res.send(workData);
-
   } catch (err) {
     res.send(err.message);
   }

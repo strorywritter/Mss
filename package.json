@@ -31,6 +31,7 @@
     "multer-storage-cloudinary": "^4.0.0",
     "multiparty": "^4.2.3",
     "nodemon": "^2.0.20",
+    "prettier": "^2.8.1",
     "supertest": "^6.3.1",
     "timestamp": "0.0.1",
     "uuid": "^9.0.0"
